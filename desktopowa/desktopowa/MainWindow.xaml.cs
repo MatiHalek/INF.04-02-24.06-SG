@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.IO;
 
 namespace desktopowa
 {
@@ -9,8 +10,27 @@ namespace desktopowa
         public MainWindow()
         {
             InitializeComponent();
-            albumList = MusicAlbum.ReadAlbums("../../../Data.txt");
+            albumList = ReadAlbums("../../../Data.txt");
             UpdateAlbum(currentAlbumIndex);
+        }
+        public List<MusicAlbum> ReadAlbums(string filePath)
+        {
+            List<MusicAlbum> albumList = [];
+            using (StreamReader readFile = new(filePath))
+            {
+                while (!readFile.EndOfStream)
+                {
+                    string artist = readFile.ReadLine() ?? "";
+                    string album = readFile.ReadLine() ?? "";
+                    uint songsNumber = uint.Parse(readFile.ReadLine() ?? "");
+                    int yearOfEdition = int.Parse(readFile.ReadLine() ?? "");
+                    uint downloadNumber = uint.Parse(readFile.ReadLine() ?? "");
+                    readFile.ReadLine();
+                    MusicAlbum music = new(artist, album, songsNumber, yearOfEdition, downloadNumber);
+                    albumList.Add(music);
+                }
+            }
+            return albumList;
         }
         public void UpdateAlbum(int albumIndex)
         {

@@ -1,6 +1,6 @@
 ﻿namespace konsola
 {
-    internal class Program
+    public class Program
     {
         /***********************************************
         nazwa metody: ReadAlbums
